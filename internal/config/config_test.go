@@ -5,8 +5,9 @@ import (
 	"testing"
 )
 
-func TestSetup(t *testing.T) {
-	if reflect.DeepEqual(DBConfig, &DatabaseConfig{}) {
+func TestInit(t *testing.T) {
+	Init("../../.env")
+	if reflect.DeepEqual(DB, &database{}) {
 		t.Error("설정 셋업 실패")
 	}
 }

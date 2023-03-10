@@ -1,30 +1,34 @@
 package config
 
 import (
+	"fiber-test/internal/validation"
 	"github.com/caarlos0/env/v7"
 	"github.com/joho/godotenv"
 	"log"
 )
 
-type DatabaseConfig struct {
-	Host     string `env:"HOST" envDefault:"localhost"`
-	Port     int    `env:"PORT" envDefault:"3306"`
-	User     string `env:"USER,required"`
-	Password string `env:"PASSWORD,required"`
-	Database string `env:"DATABASE,required"`
+type database struct {
+	Host     string `env:"HOST" envDefault:"localhost" validate:"required,hostname"`
+	Port     int    `env:"PORT" envDefault:"3306" validate:"required,gt=0,lt=65536"`
+	User     string `env:"USER,required" validate:"required,gte=1"`
+	Password string `env:"PASSWORD"`
+	Database string `env:"DATABASE,required" validate:"required,gte=1"`
 }
 
-var DBConfig = &DatabaseConfig{}
+var DB = &database{}
 
-func init() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+func Init(path ...string) {
+	if err := godotenv.Load(path...); err != nil {
+		log.Fatal("env 파일을 찾을 수 없습니다.")
 	}
 
 	opt := env.Options{
 		Prefix: "DB_",
 	}
-	if err := env.Parse(DBConfig, opt); err != nil {
+	if err := env.Parse(DB, opt); err != nil {
+		log.Fatal(err)
+	}
+	if err := validation.Struct(DB); err != nil {
 		log.Fatal(err)
 	}
 }
