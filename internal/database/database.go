@@ -7,8 +7,6 @@ import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
-	"os"
-	"runtime"
 )
 
 var DB *gorm.DB
@@ -19,10 +17,6 @@ func Connect() (err error) {
 		log.Println("warn 이미 연결된 Connection 이 있습니다.")
 		return
 	}
-
-	log.Println(runtime.Caller(0))
-	log.Println(os.Executable())
-	log.Println(os.Getwd())
 
 	DB, err = gorm.Open(sqlite.Open(fmt.Sprintf("%s.db", config.DB.Database)), &gorm.Config{})
 	return
