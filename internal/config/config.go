@@ -17,18 +17,26 @@ type database struct {
 
 var DB = &database{}
 
-func Init(path ...string) {
-	if err := godotenv.Load(path...); err != nil {
-		log.Fatal("env 파일을 찾을 수 없습니다.")
+func Init(path ...string) (err error) {
+	if err = godotenv.Load(path...); err != nil {
+		return
 	}
 
 	opt := env.Options{
 		Prefix: "DB_",
 	}
-	if err := env.Parse(DB, opt); err != nil {
-		log.Fatal(err)
+	if err = env.Parse(DB, opt); err != nil {
+		return
 	}
-	if err := validation.Struct(DB); err != nil {
+	if err = validation.Struct(DB); err != nil {
+		return
+	}
+
+	return
+}
+
+func MustInit(path ...string) {
+	if err := Init(path...); err != nil {
 		log.Fatal(err)
 	}
 }
