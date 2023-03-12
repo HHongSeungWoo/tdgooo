@@ -24,6 +24,17 @@ func TestConnect(t *testing.T) {
 	Close()
 }
 
+func TestDuplicateConnect(t *testing.T) {
+	MustConnect()
+	MustConnect()
+	Close()
+}
+
+func TestDuplicateClose(t *testing.T) {
+	Close()
+	Close()
+}
+
 func TestMigrate(t *testing.T) {
 	MustConnect()
 	if err := Migrate(TestModel{}); err != nil {
