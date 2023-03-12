@@ -24,7 +24,7 @@ func Connect() (err error) {
 
 func MustConnect() {
 	if err := Connect(); err != nil {
-		log.Fatal(err)
+		log.Panicln(err)
 	}
 }
 
@@ -41,7 +41,7 @@ func Close() {
 		return
 	}
 
-	if db, err := DB.DB(); err != nil {
+	if db, err := DB.DB(); err == nil {
 		_ = db.Close()
 	}
 	DB = nil
