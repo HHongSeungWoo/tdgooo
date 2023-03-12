@@ -9,6 +9,7 @@ import (
 
 type NullString sql.NullString
 
+//goland:noinspection GoMixedReceiverTypes
 func (x *NullString) MarshalJSON() ([]byte, error) {
 	if !x.Valid {
 		return []byte("null"), nil
@@ -16,6 +17,7 @@ func (x *NullString) MarshalJSON() ([]byte, error) {
 	return json.Marshal(x.String)
 }
 
+//goland:noinspection GoMixedReceiverTypes
 func (x *NullString) Scan(value interface{}) error {
 	var s sql.NullString
 	if err := s.Scan(value); err != nil {
@@ -24,6 +26,7 @@ func (x *NullString) Scan(value interface{}) error {
 	return nil
 }
 
+//goland:noinspection GoMixedReceiverTypes
 func (x NullString) Value() (driver.Value, error) {
 	if !x.Valid {
 		return nil, nil
@@ -31,7 +34,7 @@ func (x NullString) Value() (driver.Value, error) {
 	return x.String, nil
 }
 
-type TODO struct {
+type Todo struct {
 	Id          uint       `gorm:"primaryKey" json:"id"`
 	Title       string     `json:"title"`
 	Category    NullString `json:"category"`

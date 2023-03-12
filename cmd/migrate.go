@@ -10,7 +10,7 @@ import (
 func main() {
 	config.MustInit(".env")
 	database.MustConnect()
-	if err := database.Migrate(model.TODO{}); err != nil {
+	if err := database.Migrate(model.Todo{}); err != nil {
 		log.Panicln(err)
 	}
 }
