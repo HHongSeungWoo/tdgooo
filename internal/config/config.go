@@ -8,8 +8,8 @@ import (
 )
 
 type database struct {
-	Host     string `env:"HOST" envDefault:"localhost" validate:"required,hostname"`
-	Port     int    `env:"PORT" envDefault:"3306" validate:"required,gt=0,lt=65536"`
+	Host     string `env:"HOST,required" envDefault:"localhost" validate:"required,hostname"`
+	Port     int    `env:"PORT,required" envDefault:"3306" validate:"required,gt=0,lt=65536"`
 	User     string `env:"USER,required" validate:"required,gte=1"`
 	Password string `env:"PASSWORD"`
 	Database string `env:"DATABASE,required" validate:"required,gte=1"`
@@ -37,6 +37,6 @@ func Init(path ...string) (err error) {
 
 func MustInit(path ...string) {
 	if err := Init(path...); err != nil {
-		log.Fatal(err)
+		log.Panicln(err)
 	}
 }
