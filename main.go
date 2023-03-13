@@ -8,7 +8,6 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/gofiber/fiber/v2"
 	"log"
-	"strconv"
 )
 
 type CreateTodo struct {
@@ -85,8 +84,8 @@ func main() {
 	})
 
 	app.Get("/:id", func(c *fiber.Ctx) error {
-		id, err := strconv.Atoi(c.Params("id"))
-		if err != nil {
+		id, _ := c.ParamsInt("id", -1)
+		if id <= 0 {
 			c.Status(404)
 			return nil
 		}
@@ -100,19 +99,19 @@ func main() {
 	})
 
 	app.Patch("/:id", func(c *fiber.Ctx) error {
-		id, err := strconv.Atoi(c.Params("id"))
-		if err != nil {
+		id, _ := c.ParamsInt("id", -1)
+		if id <= 0 {
 			c.Status(404)
 			return nil
 		}
 
 		body := &UpdateTodo{}
 
-		if err = c.BodyParser(body); err != nil {
+		if err := c.BodyParser(body); err != nil {
 			return err
 		}
 
-		if err = validation.Struct(body); err != nil {
+		if err := validation.Struct(body); err != nil {
 			return err
 		}
 
@@ -143,8 +142,8 @@ func main() {
 	})
 
 	app.Delete("/:id", func(c *fiber.Ctx) error {
-		id, err := strconv.Atoi(c.Params("id"))
-		if err != nil {
+		id, _ := c.ParamsInt("id", -1)
+		if id <= 0 {
 			c.Status(404)
 			return nil
 		}
